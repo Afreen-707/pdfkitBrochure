@@ -2,12 +2,31 @@ import os
 import io
 import pdfkit
 from flask import Flask, request, render_template, send_file
+from flask import Flask, render_template
+import datetime
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
+@app.route("/")
 @app.route("/", methods=["GET", "POST"])
+def brochure():
+    return render_template("brochure.html",
+        name="SkyTech Solutions",
+        logo_url="https://example.com/logo.png",
+        about_us="We are a passionate team of developers, designers, and strategists helping businesses thrive in the digital age.",
+        services=["Web Development", "Mobile App Development", "UI/UX Design", "Digital Marketing"],
+        reasons=["Experienced Team", "Client-Centric Approach", "On-Time Delivery", "Affordable Pricing"],
+        testimonials=[
+            "SkyTech transformed our business presence online.",
+            "Professional, punctual, and creative – highly recommended!",
+            "Their designs are clean and user-friendly. Loved working with them!"
+        ],
+        contact=["Email: contact@skytech.com", "Phone: +91 98765 43210", "Website: www.skytech.com"],
+        current_year=datetime.datetime.now().year
+    )
+    
 def index():
     if request.method == "POST":
         name = request.form["name"]
